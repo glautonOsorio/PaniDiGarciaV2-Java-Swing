@@ -4,7 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JInternalFrame;
 
-public class TelaPrincipal extends JInternalFrame {
+public class FrameRegisterUser extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 
@@ -15,7 +15,7 @@ public class TelaPrincipal extends JInternalFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaPrincipal frame = new TelaPrincipal();
+					FrameRegisterUser frame = new FrameRegisterUser();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -27,7 +27,7 @@ public class TelaPrincipal extends JInternalFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaPrincipal() {
+	public FrameRegisterUser() {
 		setBounds(100, 100, 450, 300);
 
 	}
