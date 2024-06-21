@@ -3,18 +3,21 @@ package entidades;
 import java.sql.Date;
 
 public class Users {
+	public enum Gender {
+		Male, Female, Other
+	}
 
 	private int Id;
 	private String fullName;
-	private String gender;
+	private Gender gender;
 	private String email;
 	private Date birthDay;
 	private String cpf;
 	private String password;
-	private int address_id;
+	private Address address;
 
-	public Users(int id, String fullName, String gender, String email, Date birthDay, String cpf, String password,
-			int address_id) {
+	public Users(int id, String fullName, Gender gender, String email, Date birthDay, String cpf, String password,
+			Address address) {
 		super();
 		Id = id;
 		this.fullName = fullName;
@@ -23,11 +26,11 @@ public class Users {
 		this.birthDay = birthDay;
 		this.cpf = cpf;
 		this.password = password;
-		this.address_id = address_id;
+		this.address = address;
 	}
 
-	public Users(String fullName, String gender, String email, Date birthDay, String cpf, String password,
-			int address_id) {
+	public Users(String fullName, Gender gender, String email, Date birthDay, String cpf, String password,
+			Address address) {
 		super();
 		this.fullName = fullName;
 		this.gender = gender;
@@ -35,7 +38,7 @@ public class Users {
 		this.birthDay = birthDay;
 		this.cpf = cpf;
 		this.password = password;
-		this.address_id = address_id;
+		this.address = address;
 	}
 
 	public int getId() {
@@ -50,11 +53,11 @@ public class Users {
 		this.fullName = fullName;
 	}
 
-	public String getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 
@@ -90,18 +93,18 @@ public class Users {
 		this.password = password;
 	}
 
-	public int getAddress_id() {
-		return address_id;
+	public Address getAddress() {
+		return address;
 	}
 
-	public void setAddress_id(int address_id) {
-		this.address_id = address_id;
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	@Override
 	public String toString() {
 		return "Users [Id=" + Id + ", fullName=" + fullName + ", gender=" + gender + ", email=" + email + ", birthDay="
-				+ birthDay + ", cpf=" + cpf + ", password=" + password + ", address_id=" + address_id + "]";
+				+ birthDay + ", cpf=" + cpf + ", password=" + password + ", address=" + address + "]";
 	}
 
 }

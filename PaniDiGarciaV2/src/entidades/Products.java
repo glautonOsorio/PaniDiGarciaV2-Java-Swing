@@ -7,28 +7,29 @@ public class Products {
 	private String description;
 	private double price;
 	private String image;
-	private int category_id;
-	private int user_id;
+	private Categories categories;
+	private Users user;
 
-	public Products(int id, String name, String description, double price, String image, int category_id, int user_id) {
+	public Products(int id, String name, String description, double price, String image, Categories categories,
+			Users user) {
 		super();
 		Id = id;
 		this.name = name;
 		this.description = description;
 		this.price = price;
 		this.image = image;
-		this.category_id = category_id;
-		this.user_id = user_id;
+		this.categories = categories;
+		this.user = user;
 	}
 
-	public Products(String name, String description, double price, String image, int category_id, int user_id) {
+	public Products(String name, String description, double price, String image, Categories categories, Users user) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.price = price;
 		this.image = image;
-		this.category_id = category_id;
-		this.user_id = user_id;
+		this.categories = categories;
+		this.user = user;
 	}
 
 	public int getId() {
@@ -67,26 +68,26 @@ public class Products {
 		this.image = image;
 	}
 
-	public int getCategory_id() {
-		return category_id;
+	public Categories getCategories() {
+		return categories;
 	}
 
-	public void setCategory_id(int category_id) {
-		this.category_id = category_id;
+	public void setCategories(Categories categories) {
+		this.categories = categories;
 	}
 
-	public int getUser_id() {
-		return user_id;
+	public Users getUser() {
+		return user;
 	}
 
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
+	public void setUser(Users user) {
+		this.user = user;
 	}
 
 	@Override
 	public String toString() {
 		return "Products [Id=" + Id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", image=" + image + ", category_id=" + category_id + ", user_id=" + user_id + "]";
+				+ ", image=" + image + ", category_id=" + categories + ", user_id=" + user + "]";
 	}
 
 }
