@@ -15,16 +15,11 @@ id INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
 fullName VARCHAR(64),
 gender ENUM("Male","Female","Other"),
 email VARCHAR(255),
-birthDate DATE,
+birthDay DATE,
 cpf VARCHAR(11),
 password VARCHAR(100),
 address_id INT,
 FOREIGN KEY(address_id) REFERENCES addresses(id)
-);
-
-CREATE TABLE categories(
-id INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
-c_name VARCHAR(50)
 );
 
 CREATE TABLE products (
@@ -33,8 +28,11 @@ CREATE TABLE products (
     description TEXT,
     price DECIMAL(10, 2),
     image VARCHAR(255),
-    category_id INT,
+    categories Enum("Pão","Bolo","Doce","Salgado","Tortas"),
 	user_id INT,
-    FOREIGN KEY (category_id) REFERENCES categories(id),
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
+
+DROP TABLE addresses;
+DROP TABLE products;
+DROP TABLE users;

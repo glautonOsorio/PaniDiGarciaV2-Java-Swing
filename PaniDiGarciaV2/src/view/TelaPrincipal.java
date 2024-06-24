@@ -2,9 +2,10 @@ package view;
 
 import java.awt.EventQueue;
 
-import javax.swing.JInternalFrame;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 
-public class TelaPrincipal extends JInternalFrame {
+public class TelaPrincipal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,8 +29,12 @@ public class TelaPrincipal extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public TelaPrincipal() {
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 1000, 601);
+		getContentPane().setLayout(null);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(54, 112, 887, 192);
+		getContentPane().add(scrollPane);
 
 	}
-
 }
