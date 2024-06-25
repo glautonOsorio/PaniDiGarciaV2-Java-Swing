@@ -14,6 +14,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class FrameLogin {
 
@@ -92,13 +94,21 @@ public class FrameLogin {
 		frame.getContentPane().add(passwordField);
 
 		JButton btnLogin = new JButton("Login");
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaPrincipal telaP = new TelaPrincipal();
+				telaP.setVisible(true);
+				frame.dispose();
+
+			}
+		});
 		btnLogin.setForeground(new Color(0, 0, 0));
 		btnLogin.setBackground(new Color(152, 251, 152));
 		btnLogin.setFont(new Font("Serif", Font.PLAIN, 25));
 		btnLogin.setBounds(300, 364, 150, 40);
 		frame.getContentPane().add(btnLogin);
 
-		JLabel lblRegister = new JLabel("Do you want some potato? ya patty fuck");
+		JLabel lblRegister = new JLabel("Don't have an account? Register-here!");
 		lblRegister.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -109,11 +119,11 @@ public class FrameLogin {
 			}
 		});
 		lblRegister.setHorizontalAlignment(SwingConstants.CENTER);
-		lblRegister.setFont(new Font("Serif", Font.BOLD | Font.ITALIC, 14));
+		lblRegister.setFont(new Font("Serif", Font.BOLD | Font.ITALIC, 18));
 		lblRegister.setForeground(new Color(70, 130, 180));
 		lblRegister.setBounds(223, 324, 300, 40);
 		frame.getContentPane().add(lblRegister);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 4, true));
 		panel.setBackground(new Color(244, 164, 96));

@@ -168,17 +168,6 @@ public class FrameRegisterUser extends JFrame {
 		lblGender.setBounds(712, 187, 100, 30);
 		getContentPane().add(lblGender);
 
-		JButton btnRegister = new JButton("Register");
-		btnRegister.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
-		btnRegister.setBackground(new Color(152, 251, 152));
-		btnRegister.setFont(new Font("Serif", Font.ITALIC, 30));
-		btnRegister.setBounds(169, 393, 200, 50);
-		getContentPane().add(btnRegister);
-
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -201,6 +190,17 @@ public class FrameRegisterUser extends JFrame {
 		passwordField.setFont(new Font("Serif", Font.PLAIN, 16));
 		passwordField.setBounds(579, 134, 250, 30);
 		panel.add(passwordField);
+		
+				JButton btnRegister = new JButton("Confirm");
+				btnRegister.setBounds(148, 394, 200, 50);
+				panel.add(btnRegister);
+				btnRegister.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
+				btnRegister.setBackground(new Color(152, 251, 152));
+				btnRegister.setFont(new Font("Serif", Font.ITALIC, 30));
 
 	}
 

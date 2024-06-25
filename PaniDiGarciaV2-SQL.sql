@@ -27,7 +27,6 @@ CREATE TABLE products (
     name VARCHAR(255),
     description TEXT,
     price DECIMAL(10, 2),
-    image VARCHAR(255),
     categories Enum("Pão","Bolo","Doce","Salgado","Tortas"),
 	user_id INT,
     FOREIGN KEY(user_id) REFERENCES users(id)

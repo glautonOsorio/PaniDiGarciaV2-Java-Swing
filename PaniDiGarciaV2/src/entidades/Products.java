@@ -1,6 +1,9 @@
 package entidades;
 
 public class Products {
+	public enum Categories {
+		Breads, Cakes, Sweets, Savorys, Pies
+	}
 
 	private int Id;
 	private String name;
@@ -87,7 +90,7 @@ public class Products {
 	@Override
 	public String toString() {
 		return "Products [Id=" + Id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", image=" + image + ", category_id=" + categories + ", user_id=" + user + "]";
+				+ ", image=" + image + ", category=" + categories + ", user_id=" + user + "]";
 	}
 
 }
