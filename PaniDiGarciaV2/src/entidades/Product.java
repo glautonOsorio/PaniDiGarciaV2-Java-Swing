@@ -1,6 +1,6 @@
 package entidades;
 
-public class Products {
+public class Product {
 	public enum Categories {
 		Breads, Cakes, Sweets, Savorys, Pies
 	}
@@ -9,28 +9,28 @@ public class Products {
 	private String name;
 	private String description;
 	private double price;
-	private String image;
 	private Categories categories;
-	private Users user;
+	private User user;
 
-	public Products(int id, String name, String description, double price, String image, Categories categories,
-			Users user) {
+	public Product(int id, String name, String description, double price, String image, Categories categories,
+			User user) {
 		super();
 		Id = id;
 		this.name = name;
 		this.description = description;
 		this.price = price;
-		this.image = image;
 		this.categories = categories;
 		this.user = user;
 	}
 
-	public Products(String name, String description, double price, String image, Categories categories, Users user) {
+	public Product() {
+	}
+
+	public Product(String name, String description, double price, String image, Categories categories, User user) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.price = price;
-		this.image = image;
 		this.categories = categories;
 		this.user = user;
 	}
@@ -63,14 +63,6 @@ public class Products {
 		this.price = price;
 	}
 
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}
-
 	public Categories getCategories() {
 		return categories;
 	}
@@ -79,18 +71,18 @@ public class Products {
 		this.categories = categories;
 	}
 
-	public Users getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(Users user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
 	@Override
 	public String toString() {
 		return "Products [Id=" + Id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", image=" + image + ", category=" + categories + ", user_id=" + user + "]";
+				+ ", category=" + categories + ", user_id=" + user + "]";
 	}
 
 }

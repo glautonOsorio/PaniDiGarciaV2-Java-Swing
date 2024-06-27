@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.DefaultComboBoxModel;
 import entidades.Products.Categories;
 import javax.swing.SwingConstants;
+import entidades.Product;
 
 public class FrameRegisterProduct extends JFrame {
 
@@ -81,7 +82,7 @@ public class FrameRegisterProduct extends JFrame {
 		textField_1 = new JTextField();
 		textField_1.setFont(new Font("Serif", Font.PLAIN, 16));
 		textField_1.setColumns(10);
-		textField_1.setBounds(479, 148, 83, 30);
+		textField_1.setBounds(479, 148, 85, 30);
 		panel.add(textField_1);
 		
 		JLabel lblPrice = new JLabel("Description:");
@@ -100,14 +101,6 @@ public class FrameRegisterProduct extends JFrame {
 		lblCategories.setBounds(335, 120, 115, 30);
 		panel.add(lblCategories);
 		
-		JComboBox cboxGender = new JComboBox();
-		cboxGender.setModel(new DefaultComboBoxModel(Categories.values()));
-		cboxGender.setFont(new Font("Serif", Font.PLAIN, 16));
-		cboxGender.setEditable(true);
-		cboxGender.setBackground(Color.WHITE);
-		cboxGender.setBounds(339, 148, 100, 30);
-		panel.add(cboxGender);
-		
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.setFont(new Font("Serif", Font.ITALIC, 30));
 		btnCancel.setBackground(new Color(211, 211, 211));
@@ -125,5 +118,14 @@ public class FrameRegisterProduct extends JFrame {
 		lblRegisterYourProduct.setFont(new Font("Serif", Font.ITALIC, 56));
 		lblRegisterYourProduct.setBounds(10, 0, 574, 70);
 		panel.add(lblRegisterYourProduct);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setEditable(true);
+		comboBox.setBackground(new Color(255, 255, 255));
+		comboBox.setFont(new Font("Serif", Font.PLAIN, 20));
+		comboBox.setModel(new DefaultComboBoxModel(Product.Categories.values()));
+		comboBox.setSelectedIndex(0);
+		comboBox.setBounds(335, 150, 105, 30);
+		panel.add(comboBox);
 	}
 }

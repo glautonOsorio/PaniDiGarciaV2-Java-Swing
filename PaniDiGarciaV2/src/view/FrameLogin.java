@@ -3,19 +3,23 @@ package view;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
+import dao.UsersDao;
+import entidades.User;
 
 public class FrameLogin {
 
@@ -96,9 +100,8 @@ public class FrameLogin {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPrincipal telaP = new TelaPrincipal();
-				telaP.setVisible(true);
-				frame.dispose();
+
+				login();
 
 			}
 		});
@@ -130,5 +133,27 @@ public class FrameLogin {
 		panel.setBounds(179, 20, 400, 400);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
+	}
+
+	public void login() {
+
+		String email = tfEmail.getText().trim();
+		String password = new String(passwordField.getPassword());
+		UsersDao userDao = new UsersDao();
+
+		User loggedUser = userDao.loginUser(email, password);
+
+		if (loggedUser != null) {
+
+			TelaPrincipal telaP = new TelaPrincipal(loggedUser);
+			telaP.setVisible(true);
+			frame.dispose();
+		} else {
+
+			JOptionPane.showMessageDialog(null, "Email or password are incorrect");
+
+		}
+		;
+
 	}
 }

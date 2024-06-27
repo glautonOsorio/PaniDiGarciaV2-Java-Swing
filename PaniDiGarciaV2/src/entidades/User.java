@@ -2,7 +2,7 @@ package entidades;
 
 import java.sql.Date;
 
-public class Users {
+public class User {
 	public enum Gender {
 		Male, Female, Other
 	}
@@ -16,10 +16,10 @@ public class Users {
 	private String password;
 	private Address address;
 
-	public Users(int id, String fullName, Gender gender, String email, Date birthDay, String cpf, String password,
+	public User(int id, String fullName, Gender gender, String email, Date birthDay, String cpf, String password,
 			Address address) {
 		super();
-		Id = id;
+		this.Id = id;
 		this.fullName = fullName;
 		this.gender = gender;
 		this.email = email;
@@ -29,7 +29,10 @@ public class Users {
 		this.address = address;
 	}
 
-	public Users(String fullName, Gender gender, String email, Date birthDay, String cpf, String password,
+	public User() {
+	}
+
+	public User(String fullName, Gender gender, String email, Date birthDay, String cpf, String password,
 			Address address) {
 		super();
 		this.fullName = fullName;
@@ -39,6 +42,18 @@ public class Users {
 		this.cpf = cpf;
 		this.password = password;
 		this.address = address;
+	}
+
+	public User(int id, String fullName, Gender gender, String email, Date birthDay, String cpf, String password) {
+		super();
+		this.Id = id;
+		this.fullName = fullName;
+		this.gender = gender;
+		this.email = email;
+		this.birthDay = birthDay;
+		this.cpf = cpf;
+		this.password = password;
+
 	}
 
 	public int getId() {
@@ -93,11 +108,11 @@ public class Users {
 		this.password = password;
 	}
 
-	public Address getAddress() {
+	public Address getAddres() {
 		return address;
 	}
 
-	public void setAddress(Address address) {
+	public void setAddres(Address address) {
 		this.address = address;
 	}
 

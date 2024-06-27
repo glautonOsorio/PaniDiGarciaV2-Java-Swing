@@ -19,6 +19,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import entidades.User;
 
 public class FrameRegisterUser extends JFrame {
 
@@ -83,14 +84,6 @@ public class FrameRegisterUser extends JFrame {
 		tfEmail.setColumns(10);
 		tfEmail.setBounds(315, 146, 250, 30);
 		getContentPane().add(tfEmail);
-
-		JComboBox cboxGender = new JComboBox();
-		cboxGender.setEditable(true);
-		cboxGender.setBackground(new Color(255, 255, 255));
-		cboxGender.setFont(new Font("Serif", Font.PLAIN, 16));
-		cboxGender.setModel(new DefaultComboBoxModel(Gender.values()));
-		cboxGender.setBounds(712, 218, 100, 30);
-		getContentPane().add(cboxGender);
 
 		JLabel lblCpf = new JLabel("CPF: ");
 		lblCpf.setFont(new Font("Serif", Font.ITALIC, 24));
@@ -201,6 +194,15 @@ public class FrameRegisterUser extends JFrame {
 				});
 				btnRegister.setBackground(new Color(152, 251, 152));
 				btnRegister.setFont(new Font("Serif", Font.ITALIC, 30));
+				
+				JComboBox cboxGender_1 = new JComboBox();
+				cboxGender_1.setModel(new DefaultComboBoxModel(User.Gender.values()));
+				cboxGender_1.setSelectedIndex(0);
+				cboxGender_1.setFont(new Font("Serif", Font.PLAIN, 20));
+				cboxGender_1.setEditable(true);
+				cboxGender_1.setBackground(Color.WHITE);
+				cboxGender_1.setBounds(687, 206, 100, 30);
+				panel.add(cboxGender_1);
 
 	}
 

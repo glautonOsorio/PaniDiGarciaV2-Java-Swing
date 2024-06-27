@@ -16,6 +16,8 @@ public class Address {
 		this.state = state;
 		this.street = street;
 	}
+	public Address() {
+	}
 
 	public Address(String zipcode, String city, String state, String street) {
 		super();
