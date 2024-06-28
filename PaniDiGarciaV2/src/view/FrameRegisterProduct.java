@@ -15,7 +15,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.DefaultComboBoxModel;
-import entidades.Products.Categories;
+import entidades.Product.Categories;
 import javax.swing.SwingConstants;
 import entidades.Product;
 

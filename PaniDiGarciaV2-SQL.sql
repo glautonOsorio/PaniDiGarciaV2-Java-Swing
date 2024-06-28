@@ -2,27 +2,27 @@ CREATE SCHEMA pani_di_garcia_v2;
 
 USE pani_di_garcia_v2;
 
-CREATE TABLE addresses(
+CREATE TABLE address(
 id INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
-zipcode VARCHAR(8),
+zipcode VARCHAR(9),
 city VARCHAR(255),
 state VARCHAR(255),
 street VARCHAR(255)
 );
 
-CREATE TABLE users(
+CREATE TABLE user(
 id INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
 fullName VARCHAR(64),
 gender ENUM("Male","Female","Other"),
 email VARCHAR(255),
 birthDay DATE,
-cpf VARCHAR(11),
+cpf VARCHAR(14),
 password VARCHAR(100),
 address_id INT,
-FOREIGN KEY(address_id) REFERENCES addresses(id)
+FOREIGN KEY(address_id) REFERENCES address(id)
 );
 
-CREATE TABLE products (
+CREATE TABLE product (
     id INT PRIMARY KEY,
     name VARCHAR(255),
     description TEXT,
@@ -32,10 +32,10 @@ CREATE TABLE products (
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
-DROP TABLE addresses;
+
 DROP TABLE products;
 DROP TABLE users;
-
+DROP TABLE addresses;
 
 INSERT INTO addresses (zipcode, city, state, street)
 VALUES

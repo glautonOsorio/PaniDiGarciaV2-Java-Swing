@@ -108,17 +108,17 @@ public class User {
 		this.password = password;
 	}
 
-	public Address getAddres() {
+	public Address getAddress() {
 		return address;
 	}
 
-	public void setAddres(Address address) {
+	public void setAddress(Address address) {
 		this.address = address;
 	}
 
 	@Override
 	public String toString() {
-		return "Users [Id=" + Id + ", fullName=" + fullName + ", gender=" + gender + ", email=" + email + ", birthDay="
+		return "User [Id=" + Id + ", fullName=" + fullName + ", gender=" + gender + ", email=" + email + ", birthDay="
 				+ birthDay + ", cpf=" + cpf + ", password=" + password + ", address=" + address + "]";
 	}
 

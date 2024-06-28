@@ -13,7 +13,7 @@ public class ProductsDao {
 
 	public List<Product> listarProducts() {
 		List<Product> products = new ArrayList<>();
-		String query = "SELECT * FROM products";
+		String query = "SELECT * FROM product";
 		try {
 			Connection con = new ConnectionDao().getConexao();
 

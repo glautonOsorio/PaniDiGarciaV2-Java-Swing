@@ -11,11 +11,16 @@ import entidades.User.Gender;
 
 public class UsersDao {
 
-	public int inserirEndereco(User newUser) {
+	public int insertUser(User newUser) {
 		AddressDao daoAddress = new AddressDao();
-		int address_id = daoAddress.insertAddress(newUser.getAddres());
+		int address_id = daoAddress.insertAddress(newUser.getAddress());
 
-		String insert = "INSERT INTO users (fullname, gender, email, birthday, cpf, password,address_id) VALUES (?,?, ?, ?, ?, ?, ?)";
+		if (address_id == 0) {
+			System.err.println("Failed to insert address");
+			return 0;
+		}
+
+		String insert = "INSERT INTO user (fullname, gender, email, birthday, cpf, password, address_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		int primaryKey = 0;
 
 		try (Connection con = new ConnectionDao().getConexao();
@@ -47,7 +52,7 @@ public class UsersDao {
 
 	public User findById(int id) {
 
-		String sql = "SELECT id,fullName,gender,email,birthDay,cpf,password FROM users WHERE id=?";
+		String sql = "SELECT id,fullName,gender,email,birthDay,cpf,password FROM user WHERE id=?";
 		User user = null;
 
 		try {
@@ -81,7 +86,7 @@ public class UsersDao {
 	}
 
 	public User loginUser(String email, String password) {
-		String sql = "SELECT id, fullName, gender, email, birthDay, cpf, password FROM users WHERE email=?";
+		String sql = "SELECT id, fullName, gender, email, birthDay, cpf, password FROM user WHERE email=?";
 		User user = null;
 
 		try (Connection conn = new ConnectionDao().getConexao(); PreparedStatement pst = conn.prepareStatement(sql)) {

@@ -10,32 +10,39 @@ import entidades.Address;
 public class AddressDao {
 
 	public int insertAddress(Address newAddress) {
-		String insert = "INSERT INTO address (zipcode, city, state, street) VALUES (?, ?, ?, ?)";
-		int primaryKey = 0;
+	    String insert = "INSERT INTO address (zipcode, city, state, street) VALUES (?, ?, ?, ?)";
+	    int primaryKey = 0;
 
-		try (Connection con = new ConnectionDao().getConexao();
-				PreparedStatement pst = con.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS)) {
+	    try (Connection con = new ConnectionDao().getConexao();
+	         PreparedStatement pst = con.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
-			pst.setString(1, newAddress.getZipcode());
-			pst.setString(2, newAddress.getCity());
-			pst.setString(3, newAddress.getState());
-			pst.setString(4, newAddress.getStreet());
+	        pst.setString(1, newAddress.getZipcode());
+	        pst.setString(2, newAddress.getCity());
+	        pst.setString(3, newAddress.getState());
+	        pst.setString(4, newAddress.getStreet());
 
-			int rowsAffected = pst.executeUpdate();
+	        int rowsAffected = pst.executeUpdate();
 
-			if (rowsAffected > 0) {
-				ResultSet rs = pst.getGeneratedKeys();
-				if (rs.next()) {
-					primaryKey = rs.getInt(1);
-				}
-				rs.close();
-			}
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
+	        if (rowsAffected > 0) {
+	            ResultSet rs = pst.getGeneratedKeys();
+	            if (rs.next()) {
+	                primaryKey = rs.getInt(1);
+	            }
+	            rs.close();
+	        }
+	    } catch (ClassNotFoundException | SQLException e) {
+	        e.printStackTrace();
+	    }
 
-		return primaryKey;
+	    if (primaryKey == 0) {
+	        System.err.println("Failed to insert address: " + newAddress);
+	    } else {
+	        System.out.println("Inserted address with ID: " + primaryKey);
+	    }
+
+	    return primaryKey;
 	}
+
 
 	/*
 	 * 
