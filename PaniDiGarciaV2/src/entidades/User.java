@@ -32,6 +32,7 @@ public class User {
 	public User() {
 	}
 
+
 	public User(String fullName, Gender gender, String email, Date birthDay, String cpf, String password,
 			Address address) {
 		super();

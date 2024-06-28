@@ -2,8 +2,12 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Enumeration;
 import java.util.List;
 
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -41,7 +45,8 @@ public class TelaPrincipal extends JFrame {
 		getContentPane().add(scrollPane_1);
 
 		table = new JTable();
-		table.setBackground(new Color(224, 255, 255));
+		table.setFont(new Font("Serif", Font.PLAIN, 16));
+		table.setBackground(new Color(255, 228, 181));
 		scrollPane_1.setViewportView(table);
 		table.setModel(new DefaultTableModel(new Object[][] {},
 				new String[] { "Id", "Nome", "Descrição", "Price", "Categorie", "User Id" }));
@@ -51,22 +56,30 @@ public class TelaPrincipal extends JFrame {
 		table.getColumnModel().getColumn(0).setCellRenderer(centralizar);
 		table.getColumnModel().getColumn(1).setCellRenderer(centralizar);
 		table.getColumnModel().getColumn(2).setCellRenderer(centralizar);
+		table.getColumnModel().getColumn(3).setCellRenderer(centralizar);
+		table.getColumnModel().getColumn(4).setCellRenderer(centralizar);
+		table.getColumnModel().getColumn(5).setCellRenderer(centralizar);
 		table.setDefaultEditor(Object.class, null);
 
 		table.getTableHeader().setReorderingAllowed(false);
 
-		JLabel lblNewLabel = new JLabel("Welcome! " + loggedUser.getFullName() + " to Pani di Garcia V2!");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Serif", Font.ITALIC, 40));
-		lblNewLabel.setBounds(10, 11, 964, 71);
-		getContentPane().add(lblNewLabel);
+		JLabel lblMainText = new JLabel("Welcome! " + loggedUser.getFullName() + " to Pani di Garcia V2!");
+		lblMainText.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMainText.setFont(new Font("Serif", Font.ITALIC, 40));
+		lblMainText.setBounds(10, 11, 964, 71);
+		getContentPane().add(lblMainText);
 
-		JButton btnNewButton_3 = new JButton("Register");
-		btnNewButton_3.setForeground(new Color(0, 0, 0));
-		btnNewButton_3.setBackground(new Color(152, 251, 152));
-		btnNewButton_3.setFont(new Font("Serif", Font.PLAIN, 20));
-		btnNewButton_3.setBounds(20, 471, 150, 30);
-		getContentPane().add(btnNewButton_3);
+		JButton btnRegister = new JButton("Register");
+		btnRegister.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				register(loggedUser);
+			}
+		});
+		btnRegister.setForeground(new Color(0, 0, 0));
+		btnRegister.setBackground(new Color(152, 251, 152));
+		btnRegister.setFont(new Font("Serif", Font.PLAIN, 20));
+		btnRegister.setBounds(20, 471, 150, 30);
+		getContentPane().add(btnRegister);
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(240, 230, 140));
@@ -75,93 +88,149 @@ public class TelaPrincipal extends JFrame {
 		getContentPane().add(panel);
 		panel.setLayout(null);
 
-		JRadioButton rdbtnReverseAlphabeticalOrder_1 = new JRadioButton("Sweets");
-		buttonGroup.add(rdbtnReverseAlphabeticalOrder_1);
-		rdbtnReverseAlphabeticalOrder_1.setFont(new Font("Serif", Font.PLAIN, 12));
-		rdbtnReverseAlphabeticalOrder_1.setBounds(6, 73, 100, 20);
-		panel.add(rdbtnReverseAlphabeticalOrder_1);
-		rdbtnReverseAlphabeticalOrder_1.setBackground(new Color(240, 230, 140));
+		JRadioButton rdbtnSweets = new JRadioButton("Sweets");
+		rdbtnSweets.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				filter(loggedUser);
+			}
+		});
+		buttonGroup.add(rdbtnSweets);
+		rdbtnSweets.setFont(new Font("Serif", Font.PLAIN, 12));
+		rdbtnSweets.setBounds(6, 73, 100, 20);
+		panel.add(rdbtnSweets);
+		rdbtnSweets.setBackground(new Color(240, 230, 140));
 
-		JRadioButton rdbtnNewRadioButton_1_2_1 = new JRadioButton("Savorys");
-		buttonGroup.add(rdbtnNewRadioButton_1_2_1);
-		rdbtnNewRadioButton_1_2_1.setFont(new Font("Serif", Font.PLAIN, 12));
-		rdbtnNewRadioButton_1_2_1.setBounds(256, 47, 100, 20);
-		panel.add(rdbtnNewRadioButton_1_2_1);
-		rdbtnNewRadioButton_1_2_1.setBackground(new Color(240, 230, 140));
+		JRadioButton rdbtnSavorys = new JRadioButton("Savorys");
+		rdbtnSavorys.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				filter(loggedUser);
+			}
+		});
+		buttonGroup.add(rdbtnSavorys);
+		rdbtnSavorys.setFont(new Font("Serif", Font.PLAIN, 12));
+		rdbtnSavorys.setBounds(256, 47, 100, 20);
+		panel.add(rdbtnSavorys);
+		rdbtnSavorys.setBackground(new Color(240, 230, 140));
 
-		JRadioButton rdbtnReverseAlphabeticalOrder_1_2 = new JRadioButton("Breads");
-		buttonGroup.add(rdbtnReverseAlphabeticalOrder_1_2);
-		rdbtnReverseAlphabeticalOrder_1_2.setFont(new Font("Serif", Font.PLAIN, 12));
-		rdbtnReverseAlphabeticalOrder_1_2.setBounds(135, 47, 100, 20);
-		panel.add(rdbtnReverseAlphabeticalOrder_1_2);
-		rdbtnReverseAlphabeticalOrder_1_2.setBackground(new Color(240, 230, 140));
+		JRadioButton rdbtnBreads = new JRadioButton("Breads");
+		rdbtnBreads.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				filter(loggedUser);
+			}
+		});
+		buttonGroup.add(rdbtnBreads);
+		rdbtnBreads.setFont(new Font("Serif", Font.PLAIN, 12));
+		rdbtnBreads.setBounds(135, 47, 100, 20);
+		panel.add(rdbtnBreads);
+		rdbtnBreads.setBackground(new Color(240, 230, 140));
 
-		JRadioButton rdbtnNewRadioButton_1_2_1_1 = new JRadioButton("Cakes");
-		buttonGroup.add(rdbtnNewRadioButton_1_2_1_1);
-		rdbtnNewRadioButton_1_2_1_1.setFont(new Font("Serif", Font.PLAIN, 12));
-		rdbtnNewRadioButton_1_2_1_1.setBounds(135, 73, 100, 20);
-		panel.add(rdbtnNewRadioButton_1_2_1_1);
-		rdbtnNewRadioButton_1_2_1_1.setBackground(new Color(240, 230, 140));
+		JRadioButton rdbtnCakes = new JRadioButton("Cakes");
+		rdbtnCakes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				filter(loggedUser);
+			}
+		});
+		buttonGroup.add(rdbtnCakes);
+		rdbtnCakes.setFont(new Font("Serif", Font.PLAIN, 12));
+		rdbtnCakes.setBounds(135, 73, 100, 20);
+		panel.add(rdbtnCakes);
+		rdbtnCakes.setBackground(new Color(240, 230, 140));
 
-		JRadioButton rdbtnReverseAlphabeticalOrder_1_1 = new JRadioButton("Pies");
-		buttonGroup.add(rdbtnReverseAlphabeticalOrder_1_1);
-		rdbtnReverseAlphabeticalOrder_1_1.setFont(new Font("Serif", Font.PLAIN, 12));
-		rdbtnReverseAlphabeticalOrder_1_1.setBounds(256, 73, 100, 20);
-		panel.add(rdbtnReverseAlphabeticalOrder_1_1);
-		rdbtnReverseAlphabeticalOrder_1_1.setBackground(new Color(240, 230, 140));
+		JRadioButton rdbtnPies = new JRadioButton("Pies");
+		rdbtnPies.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				filter(loggedUser);
+			}
+		});
+		buttonGroup.add(rdbtnPies);
+		rdbtnPies.setFont(new Font("Serif", Font.PLAIN, 12));
+		rdbtnPies.setBounds(256, 73, 100, 20);
+		panel.add(rdbtnPies);
+		rdbtnPies.setBackground(new Color(240, 230, 140));
 
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("A-Z Order");
-		buttonGroup.add(rdbtnNewRadioButton);
-		rdbtnNewRadioButton.setFont(new Font("Serif", Font.PLAIN, 12));
-		rdbtnNewRadioButton.setBounds(6, 27, 100, 20);
-		panel.add(rdbtnNewRadioButton);
-		rdbtnNewRadioButton.setBackground(new Color(240, 230, 140));
+		JRadioButton rdbtnAZorder = new JRadioButton("A-Z Order");
+		rdbtnAZorder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				filter(loggedUser);
+			}
+		});
+		buttonGroup.add(rdbtnAZorder);
+		rdbtnAZorder.setFont(new Font("Serif", Font.PLAIN, 12));
+		rdbtnAZorder.setBounds(6, 27, 100, 20);
+		panel.add(rdbtnAZorder);
+		rdbtnAZorder.setBackground(new Color(240, 230, 140));
 
-		JRadioButton rdbtnReverseAlphabeticalOrder = new JRadioButton("Z-A Order");
-		buttonGroup.add(rdbtnReverseAlphabeticalOrder);
-		rdbtnReverseAlphabeticalOrder.setFont(new Font("Serif", Font.PLAIN, 12));
-		rdbtnReverseAlphabeticalOrder.setBounds(256, 24, 100, 20);
-		panel.add(rdbtnReverseAlphabeticalOrder);
-		rdbtnReverseAlphabeticalOrder.setBackground(new Color(240, 230, 140));
+		JRadioButton rdbtnZAorder = new JRadioButton("Z-A Order");
+		rdbtnZAorder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				filter(loggedUser);
+			}
+		});
+		buttonGroup.add(rdbtnZAorder);
+		rdbtnZAorder.setFont(new Font("Serif", Font.PLAIN, 12));
+		rdbtnZAorder.setBounds(256, 24, 100, 20);
+		panel.add(rdbtnZAorder);
+		rdbtnZAorder.setBackground(new Color(240, 230, 140));
 
-		JRadioButton rdbtnNewRadioButton_1_2 = new JRadioButton("Your Products");
-		buttonGroup.add(rdbtnNewRadioButton_1_2);
-		rdbtnNewRadioButton_1_2.setFont(new Font("Serif", Font.PLAIN, 12));
-		rdbtnNewRadioButton_1_2.setBounds(6, 50, 100, 20);
-		panel.add(rdbtnNewRadioButton_1_2);
-		rdbtnNewRadioButton_1_2.setBackground(new Color(240, 230, 140));
+		JRadioButton rdbtnUserProducts = new JRadioButton("Your Products");
+		rdbtnUserProducts.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				filter(loggedUser);
+			}
+		});
+		buttonGroup.add(rdbtnUserProducts);
+		rdbtnUserProducts.setFont(new Font("Serif", Font.PLAIN, 12));
+		rdbtnUserProducts.setBounds(6, 50, 100, 20);
+		panel.add(rdbtnUserProducts);
+		rdbtnUserProducts.setBackground(new Color(240, 230, 140));
 
-		JLabel lblNewLabel_1 = new JLabel("Filters!");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(new Font("Serif", Font.ITALIC, 24));
-		lblNewLabel_1.setBounds(6, 6, 350, 25);
-		panel.add(lblNewLabel_1);
+		JLabel lblFilters = new JLabel("Filters!");
+		lblFilters.setHorizontalAlignment(SwingConstants.CENTER);
+		lblFilters.setFont(new Font("Serif", Font.ITALIC, 24));
+		lblFilters.setBounds(6, 6, 350, 25);
+		panel.add(lblFilters);
 
-		JButton btnNewButton_3_1 = new JButton("Edit");
-		btnNewButton_3_1.setFont(new Font("Serif", Font.PLAIN, 20));
-		btnNewButton_3_1.setBackground(new Color(255, 255, 224));
-		btnNewButton_3_1.setBounds(84, 512, 150, 30);
-		getContentPane().add(btnNewButton_3_1);
+		JButton btnEdit = new JButton("Edit");
+		btnEdit.setFont(new Font("Serif", Font.PLAIN, 20));
+		btnEdit.setBackground(new Color(255, 255, 224));
+		btnEdit.setBounds(84, 512, 150, 30);
+		getContentPane().add(btnEdit);
 
-		JButton btnNewButton_3_1_1 = new JButton("Log Off");
-		btnNewButton_3_1_1.setFont(new Font("Serif", Font.PLAIN, 20));
-		btnNewButton_3_1_1.setBackground(new Color(211, 211, 211));
-		btnNewButton_3_1_1.setBounds(330, 471, 150, 30);
-		getContentPane().add(btnNewButton_3_1_1);
+		JButton btnLogOff = new JButton("Log Off");
+		btnLogOff.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				logOff();
+			}
+		});
+		btnLogOff.setFont(new Font("Serif", Font.PLAIN, 20));
+		btnLogOff.setBackground(new Color(211, 211, 211));
+		btnLogOff.setBounds(330, 471, 150, 30);
+		getContentPane().add(btnLogOff);
 
-		JButton btnNewButton_3_1_1_1 = new JButton("Refresh ");
-		btnNewButton_3_1_1_1.setFont(new Font("Serif", Font.PLAIN, 20));
-		btnNewButton_3_1_1_1.setBackground(new Color(176, 196, 222));
-		btnNewButton_3_1_1_1.setBounds(175, 471, 150, 30);
-		getContentPane().add(btnNewButton_3_1_1_1);
+		JButton btnRefresh = new JButton("Refresh");
+		btnRefresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				atualizarTabela();
+			}
+		});
+		btnRefresh.setFont(new Font("Serif", Font.PLAIN, 20));
+		btnRefresh.setBackground(new Color(176, 196, 222));
+		btnRefresh.setBounds(175, 471, 150, 30);
+		getContentPane().add(btnRefresh);
 
-		JButton btnNewButton_3_1_2 = new JButton("Delete");
-		btnNewButton_3_1_2.setFont(new Font("Serif", Font.PLAIN, 20));
-		btnNewButton_3_1_2.setBackground(new Color(240, 128, 128));
-		btnNewButton_3_1_2.setBounds(248, 512, 150, 30);
-		getContentPane().add(btnNewButton_3_1_2);
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.setFont(new Font("Serif", Font.PLAIN, 20));
+		btnDelete.setBackground(new Color(240, 128, 128));
+		btnDelete.setBounds(248, 512, 150, 30);
+		getContentPane().add(btnDelete);
 
 		atualizarTabela();
+	}
+
+	public void logOff() {
+		/// tentar implementar
+
+		dispose();
 	}
 
 	public void atualizarTabela() {
@@ -175,8 +244,39 @@ public class TelaPrincipal extends JFrame {
 		for (Product product : listProducts) {
 
 			model.addRow(new Object[] { product.getId(), product.getName(), product.getDescription(),
-					product.getPrice(), product.getCategories(), null });
+					product.getPrice(), product.getCategories(), product.getUser().getId() });
 		}
 
+	}
+
+	public void register(User user) {
+
+		FrameRegisterProduct frameRegister = new FrameRegisterProduct(user, null);
+
+		frameRegister.setVisible(true);
+		dispose();
+
+	}
+
+	public void filter(User user) {
+		Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+		ProductsDao dao = new ProductsDao();
+		while (buttons.hasMoreElements()) {
+
+			AbstractButton button = buttons.nextElement();
+			if (button.isSelected()) {
+				String selectedText = button.getText();
+				model.setRowCount(0);
+
+				List<Product> listProducts = dao.pesquisar(selectedText, user);
+
+				for (Product product : listProducts) {
+					model.addRow(new Object[] { product.getId(), product.getName(), product.getDescription(),
+							product.getPrice(), product.getCategories(), product.getUser().getId() });
+				}
+
+				model.fireTableDataChanged();
+			}
+		}
 	}
 }

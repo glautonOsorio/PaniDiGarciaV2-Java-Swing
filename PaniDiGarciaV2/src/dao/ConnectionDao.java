@@ -19,7 +19,6 @@ public class ConnectionDao {
 		Connection con = null;
 		try {
 			con = DriverManager.getConnection(url, user, password);
-			System.out.println("Conectado ao banco de dados");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

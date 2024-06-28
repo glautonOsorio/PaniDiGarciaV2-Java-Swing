@@ -43,25 +43,6 @@ public class FrameRegisterUser extends JFrame {
 	private JFormattedTextField ftfBirthday;
 	private JComboBox<Gender> cboxGender;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FrameRegisterUser frame = new FrameRegisterUser();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public FrameRegisterUser() {
 
 		formatTextFields();
@@ -94,6 +75,7 @@ public class FrameRegisterUser extends JFrame {
 
 		cboxGender = new JComboBox<>();
 		cboxGender.setModel(new DefaultComboBoxModel(Gender.values()));
+		cboxGender.setSelectedIndex(0);
 		cboxGender.setFont(new Font("Serif", Font.PLAIN, 20));
 		cboxGender.setEditable(true);
 		cboxGender.setBackground(Color.WHITE);
@@ -258,17 +240,22 @@ public class FrameRegisterUser extends JFrame {
 		User user = new User(fullName, gender, email, birthdate, cpf, password, address);
 
 		UsersDao dao = new UsersDao();
-
+		int created = 0;
 		try {
-			dao.insertUser(user);
+			created = dao.insertUser(user);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 
-		JOptionPane.showMessageDialog(this, "User registered successfully!", "Success",
-				JOptionPane.INFORMATION_MESSAGE);
-		dispose();
+		if (created == 0) {
+			JOptionPane.showMessageDialog(this, "Error in registering user!", "Error", JOptionPane.ERROR_MESSAGE);
+
+		} else {
+			JOptionPane.showMessageDialog(this, "User registered successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+			dispose();
+		}
+
 	}
 }

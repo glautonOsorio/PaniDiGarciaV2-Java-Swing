@@ -12,8 +12,7 @@ public class Product {
 	private Categories categories;
 	private User user;
 
-	public Product(int id, String name, String description, double price, String image, Categories categories,
-			User user) {
+	public Product(int id, String name, String description, double price, Categories categories, User user) {
 		super();
 		Id = id;
 		this.name = name;
@@ -26,7 +25,7 @@ public class Product {
 	public Product() {
 	}
 
-	public Product(String name, String description, double price, String image, Categories categories, User user) {
+	public Product(String name, String description, double price, Categories categories, User user) {
 		super();
 		this.name = name;
 		this.description = description;

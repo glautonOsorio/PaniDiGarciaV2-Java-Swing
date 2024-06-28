@@ -3,17 +3,20 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import entidades.Product;
 import entidades.Product.Categories;
+import entidades.User;
 
 public class ProductsDao {
 
 	public List<Product> listarProducts() {
 		List<Product> products = new ArrayList<>();
 		String query = "SELECT * FROM product";
+		UsersDao userDao = new UsersDao();
 		try {
 			Connection con = new ConnectionDao().getConexao();
 
@@ -28,7 +31,8 @@ public class ProductsDao {
 				String categoriesString = rs.getString(5);
 				Categories categories = Categories.valueOf(categoriesString);
 				int user_id = rs.getInt(6);
-				products.add(new Product(id, name, description, price, categoriesString, categories, null));
+				User user = userDao.findById(user_id);
+				products.add(new Product(id, name, description, price, categories, user));
 			}
 			rs.close();
 			pst.close();
@@ -39,73 +43,100 @@ public class ProductsDao {
 			return null;
 		}
 	}
-	/*
-	 * public int inserirPessoa(Product newProduct) {
-	 * 
-	 * // SQL String insert =
-	 * "INSERT INTO products (nome, idade, email) VALUES (?, ?, ?)";
-	 * 
-	 * try { Connection con = getConexao(); PreparedStatement pst =
-	 * con.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS);
-	 * pst.setString(1, newProduct.getNome()); pst.setInt(2, newProduct.getIdade());
-	 * pst.setString(3, newProduct.getEmail()); pst.executeUpdate();
-	 * 
-	 * // Pegando a chave ResultSet rs = pst.getGeneratedKeys(); int chaveGerada; if
-	 * (rs.next()) { chaveGerada = rs.getInt(1); return chaveGerada; } rs.close();
-	 * pst.close(); con.close();
-	 * 
-	 * } catch (ClassNotFoundException e) { e.printStackTrace(); } catch (Exception
-	 * e) { e.printStackTrace(); }
-	 * 
-	 * return 0;
-	 * 
-	 * }
-	 * 
-	 * public void excluirPessoa(int id) { String delete =
-	 * "Delete FROM products WHERE (id = ?)"; try { Connection con = getConexao();
-	 * PreparedStatement pst = con.prepareStatement(delete); pst.setInt(1, id);
-	 * pst.executeUpdate();
-	 * 
-	 * pst.close(); con.close(); } catch (Exception e) { System.out.println(e); } }
-	 * 
-	 * public Product pesquisarPorId(int id) { Product product = new Product();
-	 * String query = "SELECT * FROM products WHERE Id = ?"; try { Connection con =
-	 * getConexao(); PreparedStatement pst = con.prepareStatement(query);
-	 * pst.setInt(1, id); ResultSet rs = pst.executeQuery(); while (rs.next()) { id
-	 * = rs.getInt(1); String nome = rs.getString(2); int idade = rs.getInt(3);
-	 * String email = rs.getString(4); product = new Product(id, nome, idade,
-	 * email); } pst.close(); pst.close(); con.close(); } catch (Exception e) {
-	 * System.out.println(e); } return product; }
-	 * 
-	 * public void alterarPessoa(Product updatedProduct) {
-	 * 
-	 * String update =
-	 * "UPDATE pessoas SET nome = ?, idade = ?, email = ? WHERE Id = ?"; try {
-	 * Connection con = getConexao(); PreparedStatement pst =
-	 * con.prepareStatement(update); pst.setString(1, pessoaAlterado.getNome());
-	 * pst.setInt(2, pessoaAlterado.getIdade()); pst.setString(3,
-	 * pessoaAlterado.getEmail()); pst.setInt(4, pessoaAlterado.getId());
-	 * pst.executeUpdate();
-	 * 
-	 * pst.close(); con.close(); } catch (Exception e) { System.out.println(e); }
-	 * 
-	 * }
-	 * 
-	 * public ArrayList<Product> pesquisar(String coluna, String valor) {
-	 * ArrayList<Product> products = new ArrayList<>();
-	 * 
-	 * String query = null; if (coluna.equals("email")) { query =
-	 * "SELECT * FROM pessoas WHERE email LIKE '%" + valor + "%'"; } else if
-	 * (coluna.equals("nome")) { query = "SELECT * FROM pessoas WHERE nome LIKE '%"
-	 * + valor + "%'"; }
-	 * 
-	 * try { Connection con = getConexao(); PreparedStatement pst =
-	 * con.prepareStatement(query); ResultSet rs = pst.executeQuery();
-	 * 
-	 * while (rs.next()) { int id = rs.getInt(1); String nome = rs.getString(2); int
-	 * idade = rs.getInt(3); String email = rs.getString(4); pessoas.add(new
-	 * Pessoa(id, nome, idade, email)); } rs.close(); pst.close(); con.close(); }
-	 * catch (Exception e) { System.out.println(e); } return pessoas; }
-	 */
+
+	public int insertProduct(Product product) {
+
+		String insert = "INSERT INTO product ( name, description, price, categories, user_id) VALUES(?,?,?,?,?)";
+		int primaryKey = 0;
+		try (Connection con = new ConnectionDao().getConexao();
+				PreparedStatement pst = con.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+			pst.setString(1, product.getName());
+			pst.setString(2, product.getDescription());
+			pst.setDouble(3, product.getPrice());
+			pst.setString(4, product.getCategories().toString());
+			pst.setInt(5, product.getUser().getId());
+
+			int rowsAffected = pst.executeUpdate();
+
+			if (rowsAffected > 0) {
+				ResultSet rs = pst.getGeneratedKeys();
+				if (rs.next()) {
+					primaryKey = rs.getInt(1);
+				}
+				rs.close();
+			}
+
+		} catch (ClassNotFoundException |
+
+				SQLException e) {
+			e.printStackTrace();
+		}
+
+		return primaryKey;
+	}
+
+	public ArrayList<Product> pesquisar(String valor, User user) {
+		ArrayList<Product> products = new ArrayList<>();
+		UsersDao userDao = new UsersDao();
+
+		String query = null;
+
+		switch (valor) {
+		case "A-Z Order":
+			query = "SELECT * FROM product ORDER BY name ASC";
+			break;
+		case "Z-A Order":
+			query = "SELECT * FROM product ORDER BY name DESC";
+			break;
+		case "Your Products":
+			query = "SELECT * FROM product WHERE user_id = ?";
+			break;
+		case "Sweets":
+			query = "SELECT * FROM product WHERE categories = 'Sweets'";
+			break;
+		case "Breads":
+			query = "SELECT * FROM product WHERE categories = 'Breads'";
+			break;
+		case "Cakes":
+			query = "SELECT * FROM product WHERE categories = 'Cakes'";
+			break;
+		case "Savorys":
+			query = "SELECT * FROM product WHERE categories = 'Savorys'";
+			break;
+		case "Pies":
+			query = "SELECT * FROM product WHERE categories = 'Pies'";
+			break;
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + valor);
+		}
+
+		try (Connection con = new ConnectionDao().getConexao(); PreparedStatement pst = con.prepareStatement(query);) {
+			if (valor.equals("Your Products")) {
+				pst.setInt(1, user.getId());
+			}
+
+			ResultSet rs = pst.executeQuery();
+
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				String description = rs.getString("description");
+				double price = rs.getDouble("price");
+				String categoriesString = rs.getString("categories");
+				Categories categories = Categories.valueOf(categoriesString);
+				int userId = rs.getInt("user_id");
+				User newUser = userDao.findById(userId);
+
+				Product product = new Product(id, name, description, price, categories, newUser);
+				products.add(product);
+			}
+		} catch (Exception e) {
+			System.out.println("Error in pesquisar method: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		return products;
+	}
 
 }
