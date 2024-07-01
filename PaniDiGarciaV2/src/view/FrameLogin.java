@@ -145,8 +145,8 @@ public class FrameLogin {
 
 		if (loggedUser != null) {
 
-			TelaPrincipal telaP = new TelaPrincipal(loggedUser);
-			telaP.setVisible(true);
+			MainFrame main = new MainFrame(loggedUser);
+			main.setVisible(true);
 			frame.dispose();
 		} else {
 

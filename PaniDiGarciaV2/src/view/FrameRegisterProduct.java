@@ -144,8 +144,8 @@ public class FrameRegisterProduct extends JFrame {
 	}
 
 	public void mainScreen(User user) {
-		TelaPrincipal tela = new TelaPrincipal(user);
-		tela.setVisible(true);
+		MainFrame main = new MainFrame(user);
+		main.setVisible(true);
 		dispose();
 	}
 

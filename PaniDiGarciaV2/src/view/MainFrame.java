@@ -27,7 +27,7 @@ import entidades.Product;
 import entidades.Product.Categories;
 import entidades.User;
 
-public class TelaPrincipal extends JFrame {
+public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JScrollPane scrollPane;
@@ -37,7 +37,7 @@ public class TelaPrincipal extends JFrame {
 	private ProductsDao dao = new ProductsDao();
 	private Product product;
 
-	public TelaPrincipal(User loggedUser) {
+	public MainFrame(User loggedUser) {
 		getContentPane().setBackground(new Color(255, 165, 0));
 		setBounds(100, 100, 1000, 601);
 		getContentPane().setLayout(null);
