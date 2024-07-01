@@ -13,7 +13,7 @@ import entidades.User;
 
 public class ProductsDao {
 
-	public List<Product> listarProducts() {
+	public List<Product> listProducts() {
 		List<Product> products = new ArrayList<>();
 		String query = "SELECT * FROM product";
 		UsersDao userDao = new UsersDao();
@@ -86,7 +86,7 @@ public class ProductsDao {
 			pst.setString(2, product.getDescription());
 			pst.setDouble(3, product.getPrice());
 			pst.setString(4, String.valueOf(product.getCategories()));
-			pst.setInt(5, product.getUser().getId());
+			pst.setInt(5, product.getId());
 
 			int rowsAffected = pst.executeUpdate();
 
@@ -101,6 +101,20 @@ public class ProductsDao {
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	public void deleteProduct(int id) {
+		String delete = "Delete FROM product WHERE (id = ?)";
+		try (Connection con = new ConnectionDao().getConexao(); PreparedStatement pst = con.prepareStatement(delete);) {
+
+			pst.setInt(1, id);
+			pst.executeUpdate();
+
+			pst.close();
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 
 	public ArrayList<Product> productsFilter(String valor, User user) {

@@ -99,7 +99,7 @@ public class FrameRegisterProduct extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				if (product != null) {
-					editProduct(loggedUser);
+					editProduct(loggedUser, product.getId());
 
 				} else {
 
@@ -149,7 +149,7 @@ public class FrameRegisterProduct extends JFrame {
 		dispose();
 	}
 
-	public Product getText(User user) {
+	public Product getText(User user, int product_id) {
 		String productName = tfProductName.getText();
 		Categories categorie = (Categories) cboxCategories.getSelectedItem();
 		String priceText = tfPrice.getText();
@@ -171,12 +171,19 @@ public class FrameRegisterProduct extends JFrame {
 				return null;
 			}
 
-			return new Product(productName, description, price, categorie, user);
+			if (product_id != -1) {
+
+				return new Product(product_id, productName, description, price, categorie, user);
+			} else {
+				return new Product(productName, description, price, categorie, user);
+
+			}
+
 		}
 	}
 
 	public void registerProduct(User user) {
-		Product product = getText(user);
+		Product product = getText(user, -1);
 
 		int created = 0;
 		try {
@@ -197,19 +204,20 @@ public class FrameRegisterProduct extends JFrame {
 		}
 	}
 
-	public void editProduct(User user) {
-		Product updatedProduct = getText(user);
+	public void editProduct(User user, int product_id) {
+		Product updatedProduct = getText(user, product_id);
 
 		if (updatedProduct != null) {
 
 			try {
-				 boolean isUpdated = dao.updateProduct(updatedProduct);
-		            if (isUpdated) {
-		                JOptionPane.showMessageDialog(this, "Product updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-		                mainScreen(user);
-		            } else {
-		                JOptionPane.showMessageDialog(this, "Error updating product!", "Error", JOptionPane.ERROR_MESSAGE);
-		            }
+				boolean isUpdated = dao.updateProduct(updatedProduct);
+				if (isUpdated) {
+					JOptionPane.showMessageDialog(this, "Product updated successfully!", "Success",
+							JOptionPane.INFORMATION_MESSAGE);
+					mainScreen(user);
+				} else {
+					JOptionPane.showMessageDialog(this, "Error updating product!", "Error", JOptionPane.ERROR_MESSAGE);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(this, "Error updating product!", "Error", JOptionPane.ERROR_MESSAGE);

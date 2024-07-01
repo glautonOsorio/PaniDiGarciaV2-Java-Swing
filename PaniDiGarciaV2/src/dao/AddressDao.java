@@ -35,7 +35,7 @@ public class AddressDao {
 	    }
 
 	    if (primaryKey == 0) {
-	        System.err.println("Failed to insert address: " + newAddress);
+			System.err.println("Failed to insert address: " + newAddress);
 	    } else {
 	        System.out.println("Inserted address with ID: " + primaryKey);
 	    }

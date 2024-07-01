@@ -243,7 +243,7 @@ public class TelaPrincipal extends JFrame {
 		JButton btnRefresh = new JButton("Refresh");
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				atualizarTabela();
+				updateTable();
 			}
 		});
 		btnRefresh.setFont(new Font("Serif", Font.PLAIN, 20));
@@ -252,12 +252,18 @@ public class TelaPrincipal extends JFrame {
 		getContentPane().add(btnRefresh);
 
 		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				deleteProduct(loggedUser);
+			}
+		});
 		btnDelete.setFont(new Font("Serif", Font.PLAIN, 20));
 		btnDelete.setBackground(new Color(240, 128, 128));
 		btnDelete.setBounds(248, 512, 150, 30);
 		getContentPane().add(btnDelete);
 
-		atualizarTabela();
+		updateTable();
 	}
 
 	public void logOff() {
@@ -266,13 +272,13 @@ public class TelaPrincipal extends JFrame {
 		dispose();
 	}
 
-	public void atualizarTabela() {
+	public void updateTable() {
 
 		model = (DefaultTableModel) table.getModel();
 
 		model.setRowCount(0);
 
-		List<Product> listProducts = dao.listarProducts();
+		List<Product> listProducts = dao.listProducts();
 
 		for (Product product : listProducts) {
 
@@ -340,6 +346,37 @@ public class TelaPrincipal extends JFrame {
 
 				frameRegister.setVisible(true);
 				dispose();
+
+			}
+
+		} else {
+			JOptionPane.showMessageDialog(null, "Select a product to edit");
+			return;
+
+		}
+	}
+
+	public void deleteProduct(User user) {
+
+		int line = table.getSelectedRow();
+
+		if (line != -1) {
+
+			Object objUserId = table.getValueAt(line, 5);
+			int userId = (Integer) objUserId;
+
+			if (user.getId() != userId) {
+				JOptionPane.showMessageDialog(null, "You dont have permission to delete this Product");
+				return;
+
+			} else {
+
+				int productId = (Integer) table.getValueAt(line, 0);
+
+				dao.deleteProduct(productId);
+
+				JOptionPane.showMessageDialog(null, "Product with id:" + productId + " was deleted with sucess");
+				updateTable();
 
 			}
 
