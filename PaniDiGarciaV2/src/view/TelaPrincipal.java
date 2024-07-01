@@ -12,6 +12,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -23,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 import dao.ProductsDao;
 import entidades.Product;
+import entidades.Product.Categories;
 import entidades.User;
 
 public class TelaPrincipal extends JFrame {
@@ -96,7 +98,7 @@ public class TelaPrincipal extends JFrame {
 		});
 		buttonGroup.add(rdbtnSweets);
 		rdbtnSweets.setFont(new Font("Serif", Font.PLAIN, 12));
-		rdbtnSweets.setBounds(6, 73, 100, 20);
+		rdbtnSweets.setBounds(135, 70, 100, 20);
 		panel.add(rdbtnSweets);
 		rdbtnSweets.setBackground(new Color(240, 230, 140));
 
@@ -108,7 +110,7 @@ public class TelaPrincipal extends JFrame {
 		});
 		buttonGroup.add(rdbtnSavorys);
 		rdbtnSavorys.setFont(new Font("Serif", Font.PLAIN, 12));
-		rdbtnSavorys.setBounds(256, 47, 100, 20);
+		rdbtnSavorys.setBounds(256, 50, 100, 20);
 		panel.add(rdbtnSavorys);
 		rdbtnSavorys.setBackground(new Color(240, 230, 140));
 
@@ -120,7 +122,7 @@ public class TelaPrincipal extends JFrame {
 		});
 		buttonGroup.add(rdbtnBreads);
 		rdbtnBreads.setFont(new Font("Serif", Font.PLAIN, 12));
-		rdbtnBreads.setBounds(135, 47, 100, 20);
+		rdbtnBreads.setBounds(135, 50, 100, 20);
 		panel.add(rdbtnBreads);
 		rdbtnBreads.setBackground(new Color(240, 230, 140));
 
@@ -132,7 +134,7 @@ public class TelaPrincipal extends JFrame {
 		});
 		buttonGroup.add(rdbtnCakes);
 		rdbtnCakes.setFont(new Font("Serif", Font.PLAIN, 12));
-		rdbtnCakes.setBounds(135, 73, 100, 20);
+		rdbtnCakes.setBounds(256, 30, 100, 20);
 		panel.add(rdbtnCakes);
 		rdbtnCakes.setBackground(new Color(240, 230, 140));
 
@@ -144,7 +146,7 @@ public class TelaPrincipal extends JFrame {
 		});
 		buttonGroup.add(rdbtnPies);
 		rdbtnPies.setFont(new Font("Serif", Font.PLAIN, 12));
-		rdbtnPies.setBounds(256, 73, 100, 20);
+		rdbtnPies.setBounds(256, 70, 100, 20);
 		panel.add(rdbtnPies);
 		rdbtnPies.setBackground(new Color(240, 230, 140));
 
@@ -156,7 +158,7 @@ public class TelaPrincipal extends JFrame {
 		});
 		buttonGroup.add(rdbtnAZorder);
 		rdbtnAZorder.setFont(new Font("Serif", Font.PLAIN, 12));
-		rdbtnAZorder.setBounds(6, 27, 100, 20);
+		rdbtnAZorder.setBounds(6, 10, 100, 20);
 		panel.add(rdbtnAZorder);
 		rdbtnAZorder.setBackground(new Color(240, 230, 140));
 
@@ -168,7 +170,7 @@ public class TelaPrincipal extends JFrame {
 		});
 		buttonGroup.add(rdbtnZAorder);
 		rdbtnZAorder.setFont(new Font("Serif", Font.PLAIN, 12));
-		rdbtnZAorder.setBounds(256, 24, 100, 20);
+		rdbtnZAorder.setBounds(256, 10, 100, 20);
 		panel.add(rdbtnZAorder);
 		rdbtnZAorder.setBackground(new Color(240, 230, 140));
 
@@ -180,7 +182,7 @@ public class TelaPrincipal extends JFrame {
 		});
 		buttonGroup.add(rdbtnUserProducts);
 		rdbtnUserProducts.setFont(new Font("Serif", Font.PLAIN, 12));
-		rdbtnUserProducts.setBounds(6, 50, 100, 20);
+		rdbtnUserProducts.setBounds(6, 30, 100, 20);
 		panel.add(rdbtnUserProducts);
 		rdbtnUserProducts.setBackground(new Color(240, 230, 140));
 
@@ -190,7 +192,38 @@ public class TelaPrincipal extends JFrame {
 		lblFilters.setBounds(6, 6, 350, 25);
 		panel.add(lblFilters);
 
+		JRadioButton rdbtnLowerPrice = new JRadioButton("Lower Price Order");
+		rdbtnLowerPrice.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				filter(loggedUser);
+
+			}
+		});
+		buttonGroup.add(rdbtnLowerPrice);
+		rdbtnLowerPrice.setFont(new Font("Serif", Font.PLAIN, 12));
+		rdbtnLowerPrice.setBackground(new Color(240, 230, 140));
+		rdbtnLowerPrice.setBounds(6, 50, 115, 20);
+		panel.add(rdbtnLowerPrice);
+
+		JRadioButton rdbtnHighPrice = new JRadioButton("High Price Order");
+		rdbtnHighPrice.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				filter(loggedUser);
+
+			}
+		});
+		buttonGroup.add(rdbtnHighPrice);
+		rdbtnHighPrice.setFont(new Font("Serif", Font.PLAIN, 12));
+		rdbtnHighPrice.setBackground(new Color(240, 230, 140));
+		rdbtnHighPrice.setBounds(6, 70, 115, 20);
+		panel.add(rdbtnHighPrice);
+
 		JButton btnEdit = new JButton("Edit");
+		btnEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				editProduct(loggedUser);
+			}
+		});
 		btnEdit.setFont(new Font("Serif", Font.PLAIN, 20));
 		btnEdit.setBackground(new Color(255, 255, 224));
 		btnEdit.setBounds(84, 512, 150, 30);
@@ -268,7 +301,7 @@ public class TelaPrincipal extends JFrame {
 				String selectedText = button.getText();
 				model.setRowCount(0);
 
-				List<Product> listProducts = dao.pesquisar(selectedText, user);
+				List<Product> listProducts = dao.productsFilter(selectedText, user);
 
 				for (Product product : listProducts) {
 					model.addRow(new Object[] { product.getId(), product.getName(), product.getDescription(),
@@ -277,6 +310,43 @@ public class TelaPrincipal extends JFrame {
 
 				model.fireTableDataChanged();
 			}
+		}
+	}
+
+	public void editProduct(User user) {
+
+		int line = table.getSelectedRow();
+
+		if (line != -1) {
+
+			Object objUserId = table.getValueAt(line, 5);
+			int userId = (Integer) objUserId;
+
+			if (user.getId() != userId) {
+				JOptionPane.showMessageDialog(null, "You dont have permission to edit this Product");
+				return;
+
+			} else {
+
+				int productId = (Integer) table.getValueAt(line, 0);
+				String productName = (String) table.getValueAt(line, 1);
+				String productDesc = (String) table.getValueAt(line, 2);
+				double productPrice = (Double) table.getValueAt(line, 3);
+				Categories productCategorie = (Categories) table.getValueAt(line, 4);
+
+				Product newProduct = new Product(productId, productName, productDesc, productPrice, productCategorie,
+						user);
+				FrameRegisterProduct frameRegister = new FrameRegisterProduct(user, newProduct);
+
+				frameRegister.setVisible(true);
+				dispose();
+
+			}
+
+		} else {
+			JOptionPane.showMessageDialog(null, "Select a product to edit");
+			return;
+
 		}
 	}
 }

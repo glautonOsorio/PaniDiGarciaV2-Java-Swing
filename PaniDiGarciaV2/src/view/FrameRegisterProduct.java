@@ -30,10 +30,11 @@ public class FrameRegisterProduct extends JFrame {
 	private JTextField tfProductName;
 	private JTextField tfPrice;
 	private JComboBox<Categories> cboxCategories;
+	private ProductsDao dao = new ProductsDao();
 
 	private JTextArea taDescription;
 
-	public FrameRegisterProduct(User loggedUser, Product newProduct) {
+	public FrameRegisterProduct(User loggedUser, Product product) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 652, 430);
 		contentPane = new JPanel();
@@ -83,6 +84,11 @@ public class FrameRegisterProduct extends JFrame {
 		panel.add(lblCategories);
 
 		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mainScreen(loggedUser);
+			}
+		});
 		btnCancel.setFont(new Font("Serif", Font.ITALIC, 30));
 		btnCancel.setBackground(new Color(211, 211, 211));
 		btnCancel.setBounds(364, 298, 200, 50);
@@ -92,7 +98,14 @@ public class FrameRegisterProduct extends JFrame {
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				registerProduct(loggedUser);
+				if (product != null) {
+					editProduct(loggedUser);
+
+				} else {
+
+					registerProduct(loggedUser);
+				}
+
 			}
 		});
 		btnRegister.setFont(new Font("Serif", Font.ITALIC, 30));
@@ -121,42 +134,87 @@ public class FrameRegisterProduct extends JFrame {
 		taDescription.setFont(new Font("Serif", Font.PLAIN, 14));
 		taDescription.setBounds(49, 218, 515, 69);
 		panel.add(taDescription);
+
+		if (product != null) {
+			tfProductName.setText(product.getName());
+			tfPrice.setText(String.valueOf(product.getPrice()));
+			taDescription.setText(product.getDescription());
+			cboxCategories.setSelectedItem(product.getCategories());
+		}
+	}
+
+	public void mainScreen(User user) {
+		TelaPrincipal tela = new TelaPrincipal(user);
+		tela.setVisible(true);
+		dispose();
+	}
+
+	public Product getText(User user) {
+		String productName = tfProductName.getText();
+		Categories categorie = (Categories) cboxCategories.getSelectedItem();
+		String priceText = tfPrice.getText();
+		String description = taDescription.getText();
+
+		if (productName.isEmpty() || categorie == null || priceText.isEmpty() || description.isEmpty()) {
+			JOptionPane.showMessageDialog(this, "All fields need to be filled", "Error", JOptionPane.ERROR_MESSAGE);
+			return null;
+		} else {
+			double price;
+			try {
+				price = Double.parseDouble(priceText);
+				if (price < 0) {
+					throw new NumberFormatException();
+				}
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(this, "Price must be a positive number", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return null;
+			}
+
+			return new Product(productName, description, price, categorie, user);
+		}
 	}
 
 	public void registerProduct(User user) {
-		String productName = tfProductName.getText();
-		Categories categorie = (Categories) cboxCategories.getSelectedItem();
-		double price = (double) Integer.valueOf(tfPrice.getText());
-		String description = taDescription.getText();
-
-		if (productName.isEmpty() || categorie == null || tfPrice.getText().isEmpty() || description.isEmpty()) {
-			JOptionPane.showMessageDialog(this, "All fields need to be filled", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-
-		}
-
-		Product product = new Product(productName, description, price, categorie, user);
-		ProductsDao dao = new ProductsDao();
+		Product product = getText(user);
 
 		int created = 0;
 		try {
 			created = dao.insertProduct(product);
-
 		} catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, "Error in registering product!", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
 		if (created == 0) {
 			JOptionPane.showMessageDialog(this, "Error in registering product!", "Error", JOptionPane.ERROR_MESSAGE);
-
 		} else {
 			JOptionPane.showMessageDialog(this, "Product registered successfully!", "Success",
 					JOptionPane.INFORMATION_MESSAGE);
+			mainScreen(user);
 
-			TelaPrincipal tela = new TelaPrincipal(user);
-			tela.setVisible(true);
-			dispose();
 		}
 	}
+
+	public void editProduct(User user) {
+		Product updatedProduct = getText(user);
+
+		if (updatedProduct != null) {
+
+			try {
+				 boolean isUpdated = dao.updateProduct(updatedProduct);
+		            if (isUpdated) {
+		                JOptionPane.showMessageDialog(this, "Product updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+		                mainScreen(user);
+		            } else {
+		                JOptionPane.showMessageDialog(this, "Error updating product!", "Error", JOptionPane.ERROR_MESSAGE);
+		            }
+			} catch (Exception e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(this, "Error updating product!", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
 }

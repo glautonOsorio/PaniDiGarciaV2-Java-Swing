@@ -76,7 +76,34 @@ public class ProductsDao {
 		return primaryKey;
 	}
 
-	public ArrayList<Product> pesquisar(String valor, User user) {
+	public boolean updateProduct(Product product) {
+		String update = "UPDATE product SET name = ?, description = ?, price = ?, categories = ? WHERE id = ?";
+		boolean result = false;
+
+		try (Connection con = new ConnectionDao().getConexao(); PreparedStatement pst = con.prepareStatement(update)) {
+
+			pst.setString(1, product.getName());
+			pst.setString(2, product.getDescription());
+			pst.setDouble(3, product.getPrice());
+			pst.setString(4, String.valueOf(product.getCategories()));
+			pst.setInt(5, product.getUser().getId());
+
+			int rowsAffected = pst.executeUpdate();
+
+			if (rowsAffected > 0) {
+				result = true;
+			} else {
+				System.out.println("No product found with the given ID.");
+			}
+
+		} catch (Exception e) {
+			System.out.println("Error updating product: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public ArrayList<Product> productsFilter(String valor, User user) {
 		ArrayList<Product> products = new ArrayList<>();
 		UsersDao userDao = new UsersDao();
 
@@ -91,6 +118,12 @@ public class ProductsDao {
 			break;
 		case "Your Products":
 			query = "SELECT * FROM product WHERE user_id = ?";
+			break;
+		case "Lower Price Order":
+			query = "SELECT * FROM product ORDER BY price ASC";
+			break;
+		case "High Price Order":
+			query = "SELECT * FROM product ORDER BY price DESC";
 			break;
 		case "Sweets":
 			query = "SELECT * FROM product WHERE categories = 'Sweets'";

@@ -33,9 +33,13 @@ CREATE TABLE product (
 );
 
 
-DROP TABLE products;
-DROP TABLE users;
-DROP TABLE addresses;
+DROP TABLE product;
+DROP TABLE user;
+DROP TABLE address;
+
+SELECT * FROM product;
+SELECT * FROM address;
+SELECT * FROM  user;
 
 INSERT INTO address (zipcode, city, state, street)
 VALUES
