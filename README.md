@@ -42,18 +42,6 @@ cd PaniDiGarciaV2-Java-Swing
 4. E configure o seu JDBC no projeto
 5. Execute a classe `MainFrame`.
 
-Alternativamente, você pode compilar e executar a aplicação usando a linha de comando:
-
-```bash
-# Navegue até o diretório do projeto
-cd PaniDiGarciaV2-Java-Swing
-
-# Compile os arquivos Java
-javac src/*.java
-
-# Execute a aplicação
-java src.MainFrame
-```
 
 ### Estrutura de Projeto
 
@@ -100,8 +88,19 @@ java src.MainFrame
   - Digite o nome ,descrição, preço do produto e escolha o tipo do produto.
   - Clique em `Confirm` para registrar o produto.
 
+  ## Melhorias
+
+- **Testes dos TextFields**: Adicionar testes mais robustos para os campos de texto, garantindo que os dados inseridos pelos usuários sejam validados corretamente.
+- **Utilidades para o Usuário**: Implementar mais funcionalidades úteis para os usuários, como pesquisa avançada de produtos, filtros e ordenação.
+- **Tipos de Usuário**: Adicionar diferentes tipos de usuários, como padrão,administrador e "padeiro", com permissões específicas para cada tipo.
+
 ## Autor do Projeto
 - **Autor**
 [Glauton Osório](https://github.com/glautonOsorio) 
 - **Gato do Autor**
 [Uni](https://github.com/glautonOsorio)
+
+
+
+
+
